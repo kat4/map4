@@ -1,0 +1,16 @@
+{
+  "name": "building-a-router",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "./node_modules/.bin/tape ./tests/*",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "shot": "^1.7.0",
+    "tape": "^4.2.1"
+  }
+}
