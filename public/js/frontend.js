@@ -1,4 +1,4 @@
-var map = L.map('map').setView([102.0, 0.5], 3);
+var map = L.map('map').setView([51.504269, -0.113356], 13);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
   maxZoom: 18,
@@ -9,8 +9,15 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 //L.polyline([[51.504269, -0.113356],[51.513404, -0.088766]], {color:'#66CCCC'}).addTo(map);
 
 var mygeoJSON = {
+  "type": "Feature",
+  "geometry": {
     "type": "LineString",
-    "coordinates": [[51.504269, -0.113356], [51.513404, -0.088766], [104.0, 0.0], [105.0, 1.0]]
+    "coordinates": [[-0.113356, 51.504269], [-0.088766, 51.513404]]//, [104.0, 0.0], [105.0, 1.0]]
+  },
+  // "properties": {
+  //   "longitude": ""
+  //   "latitude": ""
+//},
 };
 
 L.geoJson(mygeoJSON).addTo(map);
