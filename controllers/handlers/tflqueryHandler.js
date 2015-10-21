@@ -1,11 +1,16 @@
 var https = require('https');
+var fs = require('fs');
+var index = fs.readFileSync('./views/index.html');
+
 
 var tflQueryHandler = function(req, res) {
+  var io = require('../../app.js');
   res.writeHead(200, {
     'Content-Type': 'text/html'
   });
-  res.end('loaded');
+  res.end(index);
   var reqTflUrl = 'https://api.tfl.gov.uk/Line/waterloo-city/Arrivals?';
+
 
   function getTflData() {
     https.get(reqTflUrl, function(response) {
@@ -15,6 +20,9 @@ var tflQueryHandler = function(req, res) {
         str += chunk;
       });
       response.on('end', function() {
+
+
+        io.emit("update from server", str);
         console.log(str);
       });
     }).on('error', function(e) {
