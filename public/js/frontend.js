@@ -8,4 +8,15 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 L.polyline([[51.504269, -0.113356],[51.513404, -0.088766]], {color:'#66CCCC'}).addTo(map);
 
-map.fitBounds(polyline.getBounds());
+var marker = L.marker([51.504269, -0.113356]).addTo(map);
+
+  // icon: L.mapbox.marker.icon({
+  //   'marker-color': 'red'
+  //   'size':
+
+var t = 0;
+  marker.setLatLng(
+ [51.513404, -0.088766]
+
+
+// map.fitBounds(polyline.getBounds());
