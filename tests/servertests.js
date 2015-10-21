@@ -37,3 +37,24 @@ test('testing that index returns 200 okay', function(t){
         t.end();
     });
 });
+
+test('testing that /tflquery returns 200 okay', function(t){
+    var tflQueryHandler = require("../controllers/handlers/tflqueryHandler.js");
+    shot.inject(Server, {
+        method: "GET",
+        url: "/tflquery/"
+    }, function(res) {
+        t.equal(res.statusCode,200);
+        // console.log(tflQueryHandler.tflDataInterval);
+        // clearInterval(tflQueryHandler.tflDataInterval);
+        t.end();
+    });
+
+});
+
+// test('testing getFflData function returns data from tfl', function(t){
+//         var tflQueryHandler = require("./controllers/handlers/tflqueryHandler.js");
+//         tflQueryHandler.getTflData();
+//         t.equal(res.statusCode,200);
+//         t.end();
+// });
