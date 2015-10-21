@@ -3,8 +3,12 @@ var url = require('url');
 var articleHandler = require('./controllers/handlers/articleHandler.js');
 var generalHandler = require('./controllers/handlers/generalHandler.js');
 var rootHandler = require('./controllers/handlers/rootHandler.js');
+var tflQuery = require('./controllers/handlers/tflqueryHandler.js');
+var socketTfl = require('./controllers/handlers/socketTfl.js');
 
 
+router.addRoute('/tflquery/', tflQuery);
+router.addRoute('/socket/', socketTfl);
 router.addRoute('/articles/', articleHandler);
 router.addRoute('/', rootHandler);
 
