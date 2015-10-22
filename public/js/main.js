@@ -37,8 +37,8 @@ socket.on('update train data', function(update){
           !prevTrainInfo.hasOwnProperty(element.vehicleId);
       });
 
-      //USE THIS (filteredTrainInfo after being reduced) TO GET THE DATA FOR THE ANIMATION. CHOO-CHOO!
-      filteredTrainInfo.reduce(function (prev, current) {
+      //USE THIS TO GET THE DATA FOR THE ANIMATION. CHOO-CHOO!
+      var changedTrains = filteredTrainInfo.reduce(function (prev, current) {
         prev[current.vehicleId] = current;
         return prev;
       }, {});
