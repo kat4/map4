@@ -98,13 +98,13 @@ function switchCoords(coordsArray) {
 
 var changedTrains = {
   "201":{
-    time:36
+    timeToStation:36
   },
   "203":{
-  time:100
+  timeToStation:100
   },
   "200":{
-  time:200
+  timeToStation:200
   }
 };
 
@@ -114,19 +114,19 @@ var trainMarkers = {
 
 Object.keys(changedTrains).filter(function(elem){
   if(trainMarkers[elem]){// train exists, update time
-    trainMarkers[elem].time = changedTrains[elem].time;
+    trainMarkers[elem].timeToStation = changedTrains[elem].timeToStation;
   }
     else{//add the train
       trainMarkers[elem] = changedTrains[elem];
-      trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].time))).addTo(map);
+      trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].timeToStation))).addTo(map);
     }
 });
 
 
 function refreshMarkers(){
   Object.keys(trainMarkers).forEach(function(elem){
-  trainMarkers[elem].marker.setLatLng(switchCoords(getCoords(trainMarkers[elem].time))).update();
-  trainMarkers[elem].time = trainMarkers[elem].time - 1;
+  trainMarkers[elem].marker.setLatLng(switchCoords(getCoords(trainMarkers[elem].timeToStation))).update();
+  trainMarkers[elem].timeToStation = trainMarkers[elem].timeToStation - 1;
   });
 
 }
