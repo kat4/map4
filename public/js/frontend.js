@@ -95,24 +95,12 @@ function switchCoords(coordsArray) {
 }
 
 
-
-var changedTrains = {
-  "201":{
-    timeToStation:36
-  },
-  "203":{
-  timeToStation:100
-  },
-  "200":{
-  timeToStation:200
-  }
-};
-
 var trainMarkers = {
 
 };
 
-Object.keys(changedTrains).filter(function(elem){
+function updateTrains() {
+  Object.keys(changedTrains).filter(function(elem){
   if(trainMarkers[elem]){// train exists, update time
     trainMarkers[elem].timeToStation = changedTrains[elem].timeToStation;
   }
@@ -121,7 +109,7 @@ Object.keys(changedTrains).filter(function(elem){
       trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].timeToStation))).addTo(map);
     }
 });
-
+}
 
 function refreshMarkers(){
   Object.keys(trainMarkers).forEach(function(elem){
