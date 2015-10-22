@@ -17,49 +17,60 @@ function reverseArray(array){
   return modifiedArray;
 }
 
-var routeLen = [];
-var pointsArray = coordinates.waterlooToBank;
 
-pointsArray.reduce(function(prev, curr, index) {
-  if (index === 0) {} else {
-    routeLen.push(
-      pythag(curr[0] - prev[0], curr[1] - prev[1])
-    );
+
+function getCoords(time, routeCoords) {
+  var routeLen = [];
+  console.log(routeCoords);
+  var pointsArray = routeCoords;
+
+
+  pointsArray.reduce(function(prev, curr, index) {
+    if (index === 0) {} else {
+      routeLen.push(
+        pythag(curr[0] - prev[0], curr[1] - prev[1])
+      );
+    }
+    return curr;
+  });
+
+  function pythag(a, b) {
+    return eightdp(Math.sqrt(eightdp(a * a + b * b)));
   }
-  return curr;
-});
 
-function pythag(a, b) {
-  return eightdp(Math.sqrt(eightdp(a * a + b * b)));
-}
-
-function eightdp(num) {
-  return Math.round(num * 100000000) / 100000000;
-}
-
-var routeLenSum = routeLen.reduce(function(prev, curr, index) {
-  return prev + curr;
-}, 0);
-
-var timeSteps = 240;
-var timeStepsArr = routeLen.map(function(elem) {
-  return elem / routeLenSum * timeSteps;
-});
-
-var timeStepsCum = timeStepsArr.reduce(function(prev, curr, index) {
-  if (index === 0) {
-
-  } else {
-    prev.push(eightdp(curr + prev[index - 1]));
+  function eightdp(num) {
+    return Math.round(num * 100000000) / 100000000;
   }
-  return prev;
-}, [timeStepsArr[0]]);
 
+  var routeLenSum = routeLen.reduce(function(prev, curr, index) {
+    return prev + curr;
+  }, 0);
 
-function getCoords(time) {
-  time = 240 - time;
+  var timeSteps = 240;
+  var timeStepsArr = routeLen.map(function(elem) {
+    return elem / routeLenSum * timeSteps;
+  });
+
+  var timeStepsCum = timeStepsArr.reduce(function(prev, curr, index) {
+    if (index === 0) {
+
+    } else {
+      prev.push(eightdp(curr + prev[index - 1]));
+    }
+    return prev;
+  }, [timeStepsArr[0]]);
+
+  console.log("blablalallalalalal", time);
+  time = 239 - time;
+  if(time === 239) {
+    time = 238;
+  } else if (time === 0 || time === 1){
+    time = 2;
+  }
+
   var bounds = [];
   var points = [];
+  console.log(timeStepsCum);
   timeStepsCum.reduce(function(prev, curr, index) {
 
     if (time > prev && time < curr) {
@@ -68,12 +79,15 @@ function getCoords(time) {
       bounds.push(curr);
       points.push(pointsArray[index]);
       points.push(pointsArray[index + 1]);
-
     }
 
     return prev;
 
   }, 0);
+
+  console.log("points", points);
+  console.log("bounds", bounds);
+  console.log("time", time);
 
   var percentageTravelled = interpolate(bounds[0], bounds[1], time);
   return coordsBetweenTwoPoints(points[0], points[1], percentageTravelled);
@@ -94,7 +108,7 @@ function switchCoords(coordsArray) {
   return [coordsArray[1], coordsArray[0]];
 }
 
-
+var changedTrains = {};
 var trainMarkers = {
 
 };
@@ -106,15 +120,25 @@ function updateTrains() {
   }
     else{//add the train
       trainMarkers[elem] = changedTrains[elem];
-      trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].timeToStation))).addTo(map);
+      var dest = trainMarkers[elem].destinationName.substring(0, 4);
+      console.log(dest, coordinates[dest]);
+      trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].timeToStation, coordinates[dest]))).addTo(map);
     }
 });
 }
 
 function refreshMarkers(){
+  console.log(trainMarkers);
   Object.keys(trainMarkers).forEach(function(elem){
-  trainMarkers[elem].marker.setLatLng(switchCoords(getCoords(trainMarkers[elem].timeToStation))).update();
+  var dest = trainMarkers[elem].destinationName.substring(0, 4);
+  trainMarkers[elem].marker.setLatLng(switchCoords(getCoords(trainMarkers[elem].timeToStation, coordinates[dest]))).update();
+
+  if(trainMarkers[elem].timeToStation > 1) {
   trainMarkers[elem].timeToStation = trainMarkers[elem].timeToStation - 1;
+} else if(timeToStation === 0) {
+    timeToStation = 1;
+}
+
   });
 
 }

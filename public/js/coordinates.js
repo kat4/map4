@@ -57,8 +57,8 @@ var bankToWaterloo = [
 ];
 
 return {
-  bankToWaterloo: bankToWaterloo,
-  waterlooToBank: waterlooToBank,
+  Wate: bankToWaterloo,
+  Bank: waterlooToBank,
   waterlooAndCityLine: waterlooAndCityLine
 };
 
