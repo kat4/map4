@@ -6,42 +6,19 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   accessToken: 'pk.eyJ1Ijoic3dhc2hidWNrbGVyIiwiYSI6ImNpZnk2amtsYjAyYTh0NG03ZnAyaDFuaTIifQ.zL7e_N3nod_-P_D9skbAMg'
 }).addTo(map);
 
-var mygeoJSON = {
-  "type": "Feature",
-  "geometry": {
-    "type": "LineString",
-    "coordinates": [
-      [-0.110464,51.502599],
-      [-0.11273900000000002,51.504095],
-      [-0.112567,51.504549],
-      [-0.112009,51.504949],
-      [-0.109863,51.505377],
-      [-0.108232,51.506232000000004],
-      [-0.106645,51.50746],
-      [-0.106173,51.509223],
-      [-0.1054,51.512161],
-      [-0.103683,51.512962],
-      [-0.101366,51.51323],
-      [-0.094242, 51.513016],
-      [-0.091667,51.51323],
-      [-0.08905843,51.5134047]]
-  },
-};
 
-L.geoJson(mygeoJSON).addTo(map);
+L.geoJson(coordinates.waterlooAndCityLine).addTo(map);
 
-var pointsArray = mygeoJSON.geometry.coordinates;
-
-function pythag(a, b) {
-  return eightdp(Math.sqrt(eightdp(a * a + b * b)));
+function reverseArray(array){
+  var modifiedArray = [];
+  array.forEach(function(elem){
+    modifiedArray.unshift(elem);
+  });
+  return modifiedArray;
 }
 
-function eightdp(num) {
-  return Math.round(num * 100000000) / 100000000;
-}
-
-
-routeLen = [];
+var routeLen = [];
+var pointsArray = coordinates.waterlooToBank;
 
 pointsArray.reduce(function(prev, curr, index) {
   if (index === 0) {} else {
@@ -52,16 +29,19 @@ pointsArray.reduce(function(prev, curr, index) {
   return curr;
 });
 
+function pythag(a, b) {
+  return eightdp(Math.sqrt(eightdp(a * a + b * b)));
+}
+
+function eightdp(num) {
+  return Math.round(num * 100000000) / 100000000;
+}
 
 var routeLenSum = routeLen.reduce(function(prev, curr, index) {
   return prev + curr;
 }, 0);
 
-console.log('lenghts', routeLen);
-console.log(routeLenSum);
-
 var timeSteps = 240;
-
 var timeStepsArr = routeLen.map(function(elem) {
   return elem / routeLenSum * timeSteps;
 });
@@ -74,9 +54,6 @@ var timeStepsCum = timeStepsArr.reduce(function(prev, curr, index) {
   }
   return prev;
 }, [timeStepsArr[0]]);
-
-console.log(timeStepsArr);
-console.log(timeStepsCum);
 
 
 function getCoords(time) {
@@ -97,9 +74,9 @@ function getCoords(time) {
     return prev;
 
   }, 0);
-  console.log(bounds);
+
   var percentageTravelled = interpolate(bounds[0], bounds[1], time);
-  return coordsBetweenTwoPoints(points[0],points[1],percentageTravelled);
+  return coordsBetweenTwoPoints(points[0], points[1], percentageTravelled);
 
 }
 
@@ -113,18 +90,66 @@ function coordsBetweenTwoPoints(coordA, coordB, fraction) {
   ];
 }
 
-console.log(getCoords(239));
-
 function switchCoords(coordsArray) {
   return [coordsArray[1], coordsArray[0]];
 }
-var train = L.marker(switchCoords(getCoords(212))).addTo(map);
+
+
+
+var changedTrains = {
+  "201":{
+    time:36
+  },
+  "203":{
+  time:100
+  },
+  "200":{
+  time:200
+  }
+};
+
+var trainMarkers = {
+
+};
+
+Object.keys(changedTrains).filter(function(elem){
+  if(trainMarkers[elem]){// train exists, update time
+    trainMarkers[elem].time = changedTrains[elem].time;
+  }
+    else{//add the train
+      trainMarkers[elem] = changedTrains[elem];
+      trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].time))).addTo(map);
+    }
+});
+
+
+function refreshMarkers(){
+  Object.keys(trainMarkers).forEach(function(elem){
+  trainMarkers[elem].marker.setLatLng(switchCoords(getCoords(trainMarkers[elem].time))).update();
+  trainMarkers[elem].time = trainMarkers[elem].time - 1;
+  });
+
+}
+
+window.setInterval(function() {
+  refreshMarkers();
+}, 1000);
+
+
+
+// myInterval = 0;
+// window.setInterval(function() {
+//      hitSequence.setLatLng(L.latLng(
+//      geojson.coordinates[t][0],
+//      geojson.coordinates[t][1]));
+//      myInterval = geojson.coordinates[t][2];
+//   t += 1;
+// }, myInterval);
+// }
+//train.setLatLng(newCoords);
+
 //var marker = L.marker([51.504269, -0.113356], {'color': 'red'}).addTo(map);
 //var newmarker = L.marker([51.513404, -0.088766]).addTo(map);
-  // icon: L.mapbox.marker.icon({
-  //   'marker-color': 'red'
-  //   'size':
-
-
-
-// map.fitBounds(polyline.getBounds());
+// icon: L.mapbox.marker.icon({
+//   'marker-color': 'red'
+//   'size':
