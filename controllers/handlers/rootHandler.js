@@ -13,8 +13,8 @@
 var https = require('https');
 var fs = require('fs');
 var index = fs.readFileSync('./views/index.html');
-var lastValue = [];
-var newValue = [];
+var lastValue = '';
+var newValue = '';
 
 var rootHandler = function(req, res) {
   var io = require('../../app.js');
@@ -34,11 +34,9 @@ var rootHandler = function(req, res) {
         str += chunk;
       });
       response.on('end', function() {
-        var parsedStr = JSON.parse(str);
-        var timeToStation = [parsedStr[0].timeToStation, parsedStr[1].timeToStation].toString();
-        newValue = timeToStation;
-        if (newValue !== lastValue) {
-          io.emit("update train data", parsedStr);
+        newValue = str;
+        if (newValue != lastValue) {
+          io.emit("update train data", str);
           console.log(str);
           lastValue = newValue;
         }
