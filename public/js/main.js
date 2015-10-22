@@ -1,5 +1,5 @@
 var socket = io();
-
+var prevTrainInfo = {};
 //socket.emit('chat message in', input.value);
 
 socket.on('update from server', function(update){
@@ -8,6 +8,7 @@ socket.on('update from server', function(update){
 
 
 socket.on('update train data', function(update){
+      console.log(prevTrainInfo);
       var uniqueVehicleIds = [];
       var uniqueTrainObjects = [];
       var parsedData = JSON.parse(update);
@@ -19,7 +20,8 @@ socket.on('update train data', function(update){
 
         }
       });
-      var animatedTrainInfo = uniqueTrainObjects.map(function (obj) {
+
+      var trainInfo = uniqueTrainObjects.map(function (obj) {
         var newObj = {
           "vehicleId": obj.vehicleId,
           "timeToStation": obj.timeToStation,
@@ -28,18 +30,25 @@ socket.on('update train data', function(update){
         };
         return newObj;
       });
-      console.log('TrainInfo', animatedTrainInfo);
-      // console.log('uniquetrain', uniqueTrainObjects);
-      // console.log('uniqueID', uniqueVehicleIds);
-      // var train1 = uniqueTrainObjects[0];
-      // var train2 = uniqueTrainObjects[1];
+      console.log('TrainInfo', trainInfo);
 
-      //console.log(train.vehicleId);
-      //console.log(train.destinationName);
+      var filteredTrainInfo = trainInfo.filter(function(element) {
+        return !prevTrainInfo[element.vehicleId] || prevTrainInfo[element.vehicleId].timeToStation !== element.timeToStation ||
+          !prevTrainInfo.hasOwnProperty(element.vehicleId);
+      });
 
-      // console.log('train1: ' + train1.timeToStation + ' to: ' + train1.destinationName + ' id: ' + train1.vehicleId);
-      // console.log('train2: ' + train2.timeToStation + ' to: ' + train2.destinationName + ' id: ' + train2.vehicleId);
-      //console.log(train.currentLocation);
+      //USE THIS (filteredTrainInfo after being reduced) TO GET THE DATA FOR THE ANIMATION. CHOO-CHOO!
+      filteredTrainInfo.reduce(function (prev, current) {
+        prev[current.vehicleId] = current;
+        return prev;
+      }, {});
+
+
+      prevTrainInfo = trainInfo.reduce(function(prev, current) {
+        prev[current.vehicleId] = current;
+        return prev;
+      }, {});
+
 
 
   });
