@@ -22,8 +22,8 @@ var tflQueryHandler = function(req, res) {
       response.on('end', function() {
 
 
-        io.emit("update from server", str);
-        console.log(str);
+        io.emit("update train data", str);
+        //console.log(str);
       });
     }).on('error', function(e) {
       console.log("Got error: " + e.message);
@@ -31,8 +31,7 @@ var tflQueryHandler = function(req, res) {
   }
   getTflData();
   var tflDataInterval = setInterval(getTflData, 5000);
-  console.log(tflDataInterval);
-  clearInterval(tflDataInterval);
+  //clearInterval(tflDataInterval);
 
 
   return {
