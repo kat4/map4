@@ -43,6 +43,10 @@ socket.on('update train data', function(update){
         return prev;
       }, {});
       console.log('CHANGEDTRAINS', changedTrains);
+
+      var waitingScreen = document.getElementsByClassName('waiting-screen')[0];
+      waitingScreen.style.display = "none";
+
       updateTrains();
 
       prevTrainInfo = trainInfo.reduce(function(prev, current) {
