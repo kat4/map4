@@ -5,7 +5,7 @@
 [![Codecrystal](https://img.shields.io/badge/code-crystal-5CB3FF.svg)](http://codecrystal.herokuapp.com/crystalise/kat4/map4/master)
 [![Test Coverage](https://codeclimate.com/github/kat4/map4/badges/coverage.svg)](https://codeclimate.com/github/kat4/map4/coverage)
 
-Kat4 team has created a realtime transport app showing you whereabouts on the Waterloo and City line your train is. This is so you can plan your route between all the stops on the line.
+Kat4 team has created a [realtime transport app](map4.herokuapp.com) showing you whereabouts on the Waterloo and City line your train is. This is so you can plan your route between all the stops on the line.
 You can get more information about the team and our other projects [here](https://github.com/kat4)
 
 
