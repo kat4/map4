@@ -7,8 +7,7 @@
     "test": "./node_modules/.bin/tape ./tests/*",
     "start": "node server.js",
     "coverage": "istanbul cover ./node_modules/.bin/tape ./tests/*",
-    "codeclimate": "CODECLIMATE_REPO_TOKEN=8bb37b58f519727b49ff4d2da3521e273e895cd6ec3d2e9990f754d17928be3d codeclimate-test-reporter < lcov.info"
-  },
+    "codeclimate": "CODECLIMATE_REPO_TOKEN=8bb37b58f519727b49ff4d2da3521e273e895cd6ec3d2e9990f754d17928be3d codeclimate-test-reporter < ./coverage/lcov.info"
   },
   "author": "",
   "repository": {
@@ -17,6 +16,7 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "codeclimate-test-reporter": "^0.1.1",
     "istanbul": "^0.4.0",
     "shot": "^1.7.0",
     "tape": "^4.2.1"
