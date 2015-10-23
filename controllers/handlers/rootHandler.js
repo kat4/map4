@@ -1,15 +1,3 @@
-// var fs = require('fs');
-// var index = fs.readFileSync('./views/index.html');
-// function rootHandler(req,res){
-//     res.writeHead(200,{
-//         'Content-Type':'text/html'
-//     });
-//     res.end(index);
-// }
-//
-//
-// module.exports = rootHandler;
-
 var https = require('https');
 var fs = require('fs');
 var index = fs.readFileSync('./views/index.html');
@@ -17,7 +5,7 @@ var lastValue = '';
 var newValue = '';
 
 var rootHandler = function(req, res) {
-  var io = require('../../app.js');
+  var io = require('../../server.js').io;
   res.writeHead(200, {
     'Content-Type': 'text/html'
   });
@@ -53,9 +41,6 @@ var rootHandler = function(req, res) {
   //clearInterval(tflDataInterval);
 
 
-  return {
-    tflDataInterval: tflDataInterval
-  };
 
 };
 
