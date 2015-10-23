@@ -9,24 +9,12 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 
 L.geoJson(coordinates.waterlooAndCityLine).addTo(map);
 
-function reverseArray(array){
-  var modifiedArray = [];
-  array.forEach(function(elem){
-    modifiedArray.unshift(elem);
-  });
-  return modifiedArray;
-}
-
-
-
 function getCoords(time, routeCoords) {
   var routeLen = [];
-  console.log(routeCoords);
   var pointsArray = routeCoords;
 
-
   pointsArray.reduce(function(prev, curr, index) {
-    if (index === 0) {} else {
+    if (index !==0) {
       routeLen.push(
         pythag(curr[0] - prev[0], curr[1] - prev[1])
       );
@@ -34,43 +22,26 @@ function getCoords(time, routeCoords) {
     return curr;
   });
 
-  function pythag(a, b) {
-    return eightdp(Math.sqrt(eightdp(a * a + b * b)));
-  }
-
-  function eightdp(num) {
-    return Math.round(num * 100000000) / 100000000;
-  }
-
   var routeLenSum = routeLen.reduce(function(prev, curr, index) {
     return prev + curr;
   }, 0);
 
-  var timeSteps = 240;
+  var timeSteps = 211;
   var timeStepsArr = routeLen.map(function(elem) {
     return elem / routeLenSum * timeSteps;
   });
 
   var timeStepsCum = timeStepsArr.reduce(function(prev, curr, index) {
-    if (index === 0) {
-
-    } else {
+    if (index !== 0) {
       prev.push(eightdp(curr + prev[index - 1]));
     }
     return prev;
   }, [timeStepsArr[0]]);
 
-  console.log("blablalallalalalal", time);
-  time = 239 - time;
-  if(time === 239) {
-    time = 238;
-  } else if (time === 0 || time === 1){
-    time = 2;
-  }
+  time = 210 - time;
 
   var bounds = [];
   var points = [];
-  console.log(timeStepsCum);
   timeStepsCum.reduce(function(prev, curr, index) {
 
     if (time > prev && time < curr) {
@@ -81,13 +52,9 @@ function getCoords(time, routeCoords) {
       points.push(pointsArray[index + 1]);
     }
 
-    return prev;
+    return curr;
 
   }, 0);
-
-  console.log("points", points);
-  console.log("bounds", bounds);
-  console.log("time", time);
 
   var percentageTravelled = interpolate(bounds[0], bounds[1], time);
   return coordsBetweenTwoPoints(points[0], points[1], percentageTravelled);
@@ -108,36 +75,49 @@ function switchCoords(coordsArray) {
   return [coordsArray[1], coordsArray[0]];
 }
 
-var changedTrains = {};
-var trainMarkers = {
+function reverseArray(array) {
+  var modifiedArray = [];
+  array.forEach(function(elem) {
+    modifiedArray.unshift(elem);
+  });
+  return modifiedArray;
+}
 
-};
+function pythag(a, b) {
+  return eightdp(Math.sqrt(eightdp(a * a + b * b)));
+}
+
+function eightdp(num) {
+  return Math.round(num * 100000000) / 100000000;
+}
+
+
+var changedTrains = {};
+var trainMarkers = {};
 
 function updateTrains() {
-  Object.keys(changedTrains).filter(function(elem){
-  if(trainMarkers[elem]){// train exists, update time
-    trainMarkers[elem].timeToStation = changedTrains[elem].timeToStation;
-  }
-    else{//add the train
+  Object.keys(changedTrains).filter(function(elem) {
+    if (trainMarkers[elem]) { // train exists, update time
+      trainMarkers[elem].timeToStation = changedTrains[elem].timeToStation;
+    } else { //add the train
       trainMarkers[elem] = changedTrains[elem];
       var dest = trainMarkers[elem].destinationName.substring(0, 4);
-      console.log(dest, coordinates[dest]);
       trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].timeToStation, coordinates[dest]))).addTo(map);
     }
-});
+  });
 }
 
-function refreshMarkers(){
-  console.log(trainMarkers);
-  Object.keys(trainMarkers).forEach(function(elem){
-  var dest = trainMarkers[elem].destinationName.substring(0, 4);
-  trainMarkers[elem].marker.setLatLng(switchCoords(getCoords(trainMarkers[elem].timeToStation, coordinates[dest]))).update();
+function refreshMarkers() {
+  Object.keys(trainMarkers).forEach(function(elem) {
+    var dest = trainMarkers[elem].destinationName.substring(0, 4);
+    trainMarkers[elem].marker.setLatLng(switchCoords(getCoords(trainMarkers[elem].timeToStation, coordinates[dest]))).update();
 
-  if(trainMarkers[elem].timeToStation > 1) {
-  trainMarkers[elem].timeToStation = trainMarkers[elem].timeToStation - 1;
-} else if(timeToStation === 0) {
-    timeToStation = 1;
-}
+    if (trainMarkers[elem].timeToStation > 1) {
+      trainMarkers[elem].timeToStation = trainMarkers[elem].timeToStation - 1;
+    }
+    // else if (timeToStation === 0) {
+    //   timeToStation = 1;
+    // }
 
   });
 
