@@ -9,11 +9,6 @@ Kat4 team has created a realtime transport app showing you whereabouts on the Wa
 You can get more information about the team and our other projects [here](https://github.com/kat4)
 
 
--dependencies
--how to test
--link to app
--picture of Matt's faces
-
 ### Run locally
 1. Make sure you have Node.js installed.
 2. Clone repo from [git@github.com:kat4/wordkat.git](git@github.com:kat4/wordkat.git)
