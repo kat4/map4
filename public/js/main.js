@@ -3,12 +3,10 @@ var prevTrainInfo = {};
 //socket.emit('chat message in', input.value);
 
 socket.on('update from server', function(update){
-    console.log(update);
   });
 
 
 socket.on('update train data', function(update){
-      console.log(prevTrainInfo);
       var uniqueVehicleIds = [];
       var uniqueTrainObjects = [];
       var parsedData = JSON.parse(update);
@@ -30,6 +28,8 @@ socket.on('update train data', function(update){
         };
         return newObj;
       });
+
+      console.log('PREVTrainInfo', prevTrainInfo);
       console.log('TrainInfo', trainInfo);
 
       var filteredTrainInfo = trainInfo.filter(function(element) {
@@ -38,11 +38,12 @@ socket.on('update train data', function(update){
       });
 
       //USE THIS TO GET THE DATA FOR THE ANIMATION. CHOO-CHOO!
-      var changedTrains = filteredTrainInfo.reduce(function (prev, current) {
+      changedTrains = filteredTrainInfo.reduce(function (prev, current) {
         prev[current.vehicleId] = current;
         return prev;
       }, {});
-
+      console.log('CHANGEDTRAINS', changedTrains);
+      updateTrains();
 
       prevTrainInfo = trainInfo.reduce(function(prev, current) {
         prev[current.vehicleId] = current;

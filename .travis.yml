@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "4.1.1"
+
+addons:
+  code_climate:
+    repo_token: 8bb37b58f519727b49ff4d2da3521e273e895cd6ec3d2e9990f754d17928be3d
+
+notifications:
+  email: false
+
+services:
+  - redis-server
