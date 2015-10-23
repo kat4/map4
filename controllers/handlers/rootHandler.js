@@ -49,7 +49,7 @@ var rootHandler = function(req, res) {
     });
   }
   getTflData();
-  var tflDataInterval = setInterval(getTflData, 5000);
+  var tflDataInterval = setInterval(getTflData, 25000);
   //clearInterval(tflDataInterval);
 
 

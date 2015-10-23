@@ -1,4 +1,4 @@
-var map = L.map('map').setView([51.504269, -0.113356], 13);
+var map = L.map('map').setView([51.509223,-0.106173], 15);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
   maxZoom: 18,
@@ -26,7 +26,7 @@ function getCoords(time, routeCoords) {
     return prev + curr;
   }, 0);
 
-  var timeSteps = 211;
+  var timeSteps = 215;
   var timeStepsArr = routeLen.map(function(elem) {
     return elem / routeLenSum * timeSteps;
   });
@@ -38,7 +38,7 @@ function getCoords(time, routeCoords) {
     return prev;
   }, [timeStepsArr[0]]);
 
-  time = 210 - time;
+  time = 214 - time;
 
   var bounds = [];
   var points = [];
