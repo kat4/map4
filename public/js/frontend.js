@@ -1,4 +1,4 @@
-var map = L.map('map').setView([51.509223,-0.106173], 15);
+var map = L.map('map').setView([51.509223, -0.106173], 15);
 L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
   maxZoom: 18,
@@ -14,7 +14,7 @@ function getCoords(time, routeCoords) {
   var pointsArray = routeCoords;
 
   pointsArray.reduce(function(prev, curr, index) {
-    if (index !==0) {
+    if (index !== 0) {
       routeLen.push(
         pythag(curr[0] - prev[0], curr[1] - prev[1])
       );
@@ -103,7 +103,10 @@ function updateTrains() {
     } else { //add the train
       trainMarkers[elem] = changedTrains[elem];
       var dest = trainMarkers[elem].destinationName.substring(0, 4);
-      trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].timeToStation, coordinates[dest])), {icon: BlueTrainIcon}).addTo(map);
+      var icon = trainIcons[dest];
+      trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].timeToStation, coordinates[dest])), {
+        icon: icon
+      }).addTo(map);
     }
   });
 }
@@ -129,27 +132,31 @@ window.setInterval(function() {
   refreshMarkers();
 }, 1000);
 
-var PurpleTrainIcon = L.icon({
-      iconUrl: '/assets/PurpleTrain.png',
-      iconSize: [100, 50], // size of the icon
-      iconAnchor: [0  , 2], // point of the icon which will correspond to marker's location
-      popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
-var BlueTrainIcon = L.icon({
-      iconUrl: '/assets/BlueTrain.png',
-      iconSize: [100, 50], // size of the icon
-      iconAnchor: [0  , 2], // point of the icon which will correspond to marker's location
-      popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
-var RedTrainIcon = L.icon({
-      iconUrl: '/assets/RedTrain.png',
-      iconSize: [100, 50], // size of the icon
-      iconAnchor: [0  , 2], // point of the icon which will correspond to marker's location
-      popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
-var GreenTrainIcon = L.icon({
-      iconUrl: '/assets/GreenTrain.png',
-      iconSize: [100, 50], // size of the icon
-      iconAnchor: [0  , 2], // point of the icon which will correspond to marker's location
-      popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-    });
+
+var trainIcons = {
+  purple: L.icon({
+    iconUrl: '/assets/PurpleTrain.png',
+    iconSize: [100, 50], // size of the icon
+    iconAnchor: [40, 23], // point of the icon which will correspond to marker's location
+    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+  }),
+
+  Bank: L.icon({
+    iconUrl: '/assets/BlueTrain.png',
+    iconSize: [100, 50], // size of the icon
+    iconAnchor: [40, 23], // point of the icon which will correspond to marker's location
+    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+  }),
+  red: L.icon({
+    iconUrl: '/assets/RedTrain.png',
+    iconSize: [100, 50], // size of the icon
+    iconAnchor: [40, 23], // point of the icon which will correspond to marker's location
+    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+  }),
+  Wate: L.icon({
+    iconUrl: '/assets/GreenTrain.png',
+    iconSize: [100, 50], // size of the icon
+    iconAnchor: [40, 23], // point of the icon which will correspond to marker's location
+    popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+  })
+};
