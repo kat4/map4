@@ -75,6 +75,7 @@ function switchCoords(coordsArray) {
   return [coordsArray[1], coordsArray[0]];
 }
 
+
 function reverseArray(array) {
   var modifiedArray = [];
   array.forEach(function(elem) {
@@ -102,10 +103,11 @@ function updateTrains() {
     } else { //add the train
       trainMarkers[elem] = changedTrains[elem];
       var dest = trainMarkers[elem].destinationName.substring(0, 4);
-      trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].timeToStation, coordinates[dest]))).addTo(map);
+      trainMarkers[elem].marker = L.marker(switchCoords(getCoords(trainMarkers[elem].timeToStation, coordinates[dest])), {icon: BlueTrainIcon}).addTo(map);
     }
   });
 }
+
 
 function refreshMarkers() {
   Object.keys(trainMarkers).forEach(function(elem) {
@@ -127,21 +129,27 @@ window.setInterval(function() {
   refreshMarkers();
 }, 1000);
 
-
-
-// myInterval = 0;
-// window.setInterval(function() {
-//      hitSequence.setLatLng(L.latLng(
-//      geojson.coordinates[t][0],
-//      geojson.coordinates[t][1]));
-//      myInterval = geojson.coordinates[t][2];
-//   t += 1;
-// }, myInterval);
-// }
-//train.setLatLng(newCoords);
-
-//var marker = L.marker([51.504269, -0.113356], {'color': 'red'}).addTo(map);
-//var newmarker = L.marker([51.513404, -0.088766]).addTo(map);
-// icon: L.mapbox.marker.icon({
-//   'marker-color': 'red'
-//   'size':
+var PurpleTrainIcon = L.icon({
+      iconUrl: '/assets/PurpleTrain.png',
+      iconSize: [100, 50], // size of the icon
+      iconAnchor: [0  , 2], // point of the icon which will correspond to marker's location
+      popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+var BlueTrainIcon = L.icon({
+      iconUrl: '/assets/BlueTrain.png',
+      iconSize: [100, 50], // size of the icon
+      iconAnchor: [0  , 2], // point of the icon which will correspond to marker's location
+      popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+var RedTrainIcon = L.icon({
+      iconUrl: '/assets/RedTrain.png',
+      iconSize: [100, 50], // size of the icon
+      iconAnchor: [0  , 2], // point of the icon which will correspond to marker's location
+      popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+var GreenTrainIcon = L.icon({
+      iconUrl: '/assets/GreenTrain.png',
+      iconSize: [100, 50], // size of the icon
+      iconAnchor: [0  , 2], // point of the icon which will correspond to marker's location
+      popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
