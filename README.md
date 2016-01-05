@@ -8,6 +8,10 @@
 Kat4 team has created a [realtime transport app](https://map4.herokuapp.com) showing you whereabouts on the Waterloo and City line your train is. This is so you can plan your route between all the stops on the line.
 You can get more information about the team and our other projects [here](https://github.com/kat4)
 
+You might need to enable loading unsafe scripts in the browser:
+
+![](https://cloud.githubusercontent.com/assets/9272148/12112553/2c087076-b395-11e5-85a4-796a78021668.png)
+
 
 ### Run locally
 1. Make sure you have Node.js installed.
